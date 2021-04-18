@@ -1,0 +1,113 @@
+package rulecopy
+
+import (
+	"log"
+	"testing"
+)
+
+func TestRuleCopy_happy(t *testing.T) {
+	log.Print("test happy")
+	param := RuleCopyParam{
+		Rule: "oidc",
+		Var:  "OIDC_*",
+		Json: "rule.json",
+		From: RuleCopyProperty{
+			Property: "debeij.lunacooking.com",
+			Version:  67,
+			Edgerc:   "/workspaces/go/old/ps.edgerc",
+			Section:  "default",
+			Account:  "",
+			Json:     "debug_from.json",
+		},
+		To: RuleCopyProperty{
+			Property: "dsa2_hdebeij",
+			Version:  0,
+			Edgerc:   "",
+			Section:  "",
+			Account:  "",
+			Json:     "debug_to.json",
+		},
+	}
+	err := Run(param)
+	if err != nil {
+		t.Errorf("Error %s", err)
+	}
+}
+
+func TestRuleCopy_pbcopy(t *testing.T) {
+	log.Print("test pbcopy")
+	param := RuleCopyParam{
+		Rule: "authenticated",
+		Var:  "AUTH*",
+		Json: "authenticated.json",
+		From: RuleCopyProperty{
+			Property: "hdebeij4.ps-akamai.nl",
+			Version:  126,
+			Edgerc:   "/workspaces/go/old/ps.edgerc",
+			Section:  "default",
+			Account:  "",
+			Json:     "debug_from.json",
+		},
+		To: RuleCopyProperty{
+			Property: "",
+			Version:  0,
+			Edgerc:   "",
+			Section:  "",
+			Account:  "",
+			Json:     "",
+		},
+	}
+	err := Run(param)
+	if err != nil {
+		t.Errorf("Error %s", err)
+	}
+}
+
+func TestRuleCopy_pbpaste(t *testing.T) {
+	log.Print("test pbcopy")
+	param := RuleCopyParam{
+		Rule: "authenticated",
+		Var:  "AUTH*",
+		Json: "authenticated.json",
+		From: RuleCopyProperty{
+			Property: "",
+			Version:  0,
+			Edgerc:   "/workspaces/go/old/ps.edgerc",
+			Section:  "default",
+			Account:  "",
+			Json:     "",
+		},
+		To: RuleCopyProperty{
+			Property: "dsa2_hdebeij",
+			Version:  0,
+			Edgerc:   "",
+			Section:  "",
+			Account:  "",
+			Json:     "",
+		},
+	}
+	err := Run(param)
+	if err != nil {
+		t.Errorf("Error %s", err)
+	}
+}
+
+func TestRuleCopy_rollback(t *testing.T) {
+	log.Print("test rollback")
+	param := RuleCopyParam{
+		From: RuleCopyProperty{
+			Property: "dsa2_hdebeij",
+			Version:  2,
+			Edgerc:   "/workspaces/go/old/ps.edgerc",
+			Json:     "debug_from.json",
+		},
+		To: RuleCopyProperty{
+			Property: "dsa2_hdebeij",
+			Json:     "debug_to.json",
+		},
+	}
+	err := Run(param)
+	if err != nil {
+		t.Errorf("Error %s", err)
+	}
+}
