@@ -33,7 +33,7 @@ type args struct {
 	From        string `arg:"-f" help:"Source property" placholder:"FROMPROP"`
 	Rule        string `arg:"-r" help:"Rule name"`
 	Var         string `arg:"-v" help:"Variable names, wildcard * support"`
-	Json        string `arg:"-j" help:"JSON to store / load the rule"`
+	Def         string `arg:"-d" help:"Rule definition (json) to store / load the rule"`
 	To          string `arg:"-t" help:"Target property"`
 	Fromversion string `help:"Versionnumber or Latest, Production Staging"`
 	Fromjson    string `help:"Use JSON export as source property (instead of property manager)"`
@@ -83,7 +83,7 @@ func main() {
 	param := rulecopy.RuleCopyParam{
 		Rule: args.Rule,
 		Var:  args.Var,
-		Json: args.Json,
+		Def:  args.Def,
 		From: rulecopy.RuleCopyProperty{
 			Property: args.From,
 			Version:  fromVersion,

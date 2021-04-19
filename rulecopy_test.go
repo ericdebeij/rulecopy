@@ -10,7 +10,7 @@ func TestRuleCopy_happy(t *testing.T) {
 	param := RuleCopyParam{
 		Rule: "oidc",
 		Var:  "OIDC_*",
-		Json: "rule.json",
+		Def:  "rule.json",
 		From: RuleCopyProperty{
 			Property: "debeij.lunacooking.com",
 			Version:  67,
@@ -39,7 +39,7 @@ func TestRuleCopy_pbcopy(t *testing.T) {
 	param := RuleCopyParam{
 		Rule: "authenticated",
 		Var:  "AUTH*",
-		Json: "authenticated.json",
+		Def:  "authenticated.json",
 		From: RuleCopyProperty{
 			Property: "hdebeij4.ps-akamai.nl",
 			Version:  126,
@@ -68,7 +68,7 @@ func TestRuleCopy_pbpaste(t *testing.T) {
 	param := RuleCopyParam{
 		Rule: "authenticated",
 		Var:  "AUTH*",
-		Json: "authenticated.json",
+		Def:  "authenticated.json",
 		From: RuleCopyProperty{
 			Property: "",
 			Version:  0,

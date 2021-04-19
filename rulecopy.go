@@ -30,7 +30,7 @@ type RuleCopyParam struct {
 	To   RuleCopyProperty
 	Rule string
 	Var  string
-	Json string
+	Def  string
 }
 
 func (p *RuleCopyParam) Validate() (err error) {
@@ -46,10 +46,10 @@ func (p *RuleCopyParam) Validate() (err error) {
 	if p.To.Account == "" {
 		p.To.Account = p.From.Account
 	}
-	if p.From.Property == "" && p.From.Json == "" && p.Json == "" {
+	if p.From.Property == "" && p.From.Json == "" && p.Def == "" {
 		err = fmt.Errorf("no source defined, either json, property or json-property needs to be provided")
 	}
-	if p.To.Property == "" && p.To.Json == "" && p.Json == "" {
+	if p.To.Property == "" && p.To.Json == "" && p.Def == "" {
 		err = fmt.Errorf("no target defined, either json, property or json-property needs to be provided")
 	}
 	if p.From == p.To {
@@ -281,14 +281,14 @@ func Run(param RuleCopyParam) (err error) {
 
 	var copyRule *CopyRule
 
-	if fromPropertyRules == nil && param.Json != "" {
+	if fromPropertyRules == nil && param.Def != "" {
 		var cp CopyRule
-		err = importJson(param.Json, &cp)
+		err = importJson(param.Def, &cp)
 		if err != nil {
 			return
 		}
 		copyRule = &cp
-		log.Printf("%s loaded from %s", copyRule.Comments, param.Json)
+		log.Printf("%s loaded from %s", copyRule.Comments, param.Def)
 	}
 
 	if param.Rule != "" || param.Var != "" {
@@ -297,12 +297,12 @@ func Run(param RuleCopyParam) (err error) {
 			copyRule.Comments = fmt.Sprintf("rule %s, vars %s (%s:%d)",
 				param.Rule, param.Var,
 				param.From.Property, fromPropertyRules.PropertyVersion)
-			if param.Json != "" {
-				err = exportJson(param.Json, copyRule)
+			if param.Def != "" {
+				err = exportJson(param.Def, copyRule)
 				if err != nil {
 					return
 				}
-				log.Printf("%s stored in %s", copyRule.Comments, param.Json)
+				log.Printf("%s stored in %s", copyRule.Comments, param.Def)
 			}
 		}
 	}
