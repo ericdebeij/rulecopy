@@ -21,21 +21,18 @@ Options:
   --def DEF, -d DEF      Rule definition (json) to store / load the rule
   --to TO, -t TO         Target property
   --comments COMMENTS, -m COMMENTS
-                        Overrule default commit message / version note
+                         Overrule default commit message / version note
   --fromversion FROMVERSION
-                        Versionnumber or Latest, Production Staging
+                         Versionnumber or Latest, Production Staging
   --fromjson FROMJSON    Use JSON export as source property (instead of property manager)
-  --toversion TOVERSION
-                        Versionnumber or Latest, Production Staging
+  --toversion TOVERSION  Versionnumber or Latest, Production Staging
   --tojson TOJSON        Use JSON export as target property (instead of property manager)
   --edgerc EDGERC        [default: ~/.edgerc] [default: ~/.edgerc]
   --section SECTION      [default: default] [default: default]
   --account ACCOUNT      Accountswitchkey (partners and Akamai only)
   --toedgerc TOEDGERC    [default EDGERC]
-  --tosection TOSECTION
-                        [default SECTION]
-  --toaccount TOACCOUNT
-                        [default ACCOUNT]
+  --tosection TOSECTION  [default SECTION]
+  --toaccount TOACCOUNT  [default ACCOUNT]
   --log LOG              Log file
   --silent, -s           Quiet mode
   --dryrun               additional validation and supress actual update
