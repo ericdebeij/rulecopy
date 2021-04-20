@@ -238,6 +238,7 @@ func papiClient(param RuleCopyProperty) (p papi.PAPI, err error) {
 	if err != nil {
 		return
 	}
+	e.AccountKey = param.Account
 
 	s, err := session.New(session.WithSigner(e))
 	if err != nil {
