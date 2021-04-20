@@ -8,7 +8,14 @@ function check_version {
 	grep "VERSION" ${MAIN}/main.go | grep  \"$1\"
 	if [[ $? -eq 1 ]]
 	then
-		echo "VERSION hasn't been updated"
+		echo "VERSION hasn't been updated in ${MAIN}/main.go"
+		exit 1
+	fi
+
+	grep "version" cli.json | grep  \"$1\"
+	if [[ $? -eq 1 ]]
+	then
+		echo "version hasn't been updated in cli.json"
 		exit 1
 	fi
 }
@@ -23,6 +30,7 @@ fi
 check_version $1
 
 mkdir -p build
+rm build/*
 
 cd ${MAIN}
 GOOS=darwin GOARCH=amd64 go build -o ${BUILD}/${CMD}-$1-macamd64 .
