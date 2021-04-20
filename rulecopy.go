@@ -176,17 +176,20 @@ func BuildCopyRule(rulename string, varname string, rules *papi.Rules) *CopyRule
 	return c
 }
 
-func replaceRule(c *CopyRule, r *papi.Rules) (found bool) {
-	for i := range r.Children {
-		for j := range c.Rules {
-			if r.Children[i].Name == c.Rules[j].Name {
+func replaceRule(c *CopyRule, r *papi.Rules) (found []bool) {
+	found = make([]bool, len(c.Rules))
+	for j := range c.Rules {
+		for i := range r.Children {
+			if !found[j] && r.Children[i].Name == c.Rules[j].Name {
 				r.Children[i] = c.Rules[j]
 				log.Printf("rule %s found and replaced", c.Rules[j].Name)
-				found = true
+				found[j] = true
 			}
 		}
-		if !found {
-			found = replaceRule(c, &r.Children[i])
+		for i := range r.Children {
+			if !found[j] {
+				found[j] = replaceRule(c, &r.Children[i])[j]
+			}
 		}
 	}
 	return
@@ -194,8 +197,11 @@ func replaceRule(c *CopyRule, r *papi.Rules) (found bool) {
 
 func MergeCopyRule(c *CopyRule, torules *papi.Rules) (err error) {
 	foundrule := replaceRule(c, torules)
-	if !foundrule {
-		err = fmt.Errorf("rule %s not found in target", c.Name)
+	for i := range c.Rules {
+		if !foundrule[i] {
+			torules.Children = append(torules.Children, c.Rules[i])
+			log.Printf("rule %s not found and added as the last rule of the default section", c.Rules[i].Name)
+		}
 	}
 
 	for _, tv := range c.Variables {

@@ -25,7 +25,7 @@ for your system, or by cloning this repository and compiling it yourself.
 ## STILL IN DRAFT
 TODO:
 - //Done --json/-j => --def/-d
-- rule not in target => place at the end
+- //rule not in target => place at the end of the Default Section
 - --dryrun - perform a dryrun
 - --values - copy variable values from definition
 - subcommands for quick usage:
