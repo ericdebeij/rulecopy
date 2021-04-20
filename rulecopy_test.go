@@ -55,7 +55,7 @@ func TestRuleCopy_happy(t *testing.T) {
 			Edgerc:   "",
 			Section:  "",
 			Account:  "",
-			Backup:   "debug_backup",
+			Backup:   "debug_backup.json",
 			Json:     "debug_to.json",
 		},
 	}

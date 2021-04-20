@@ -7,7 +7,7 @@
       {
         "name": "rulecopy",
         "aliases": ["rcp"],
-        "version": "0.1.0",
+        "version": "0.1.1",
         "description": "Copy rules and variables from one property to another",
         "bin": "https://github.com/ericdebeij/rulecopy/releases/download/v{{.Version}}/akamai-{{.Name}}-{{.Version}}-{{.OS}}{{.Arch}}{{.BinSuffix}}",
         "auto-complete": true

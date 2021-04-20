@@ -21,4 +21,5 @@ Icon?
 *.csv
 *.xlsx
 *.log
+debug_*.json
 

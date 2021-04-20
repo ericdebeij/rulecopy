@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	VERSION = "0.1.0"
+	VERSION = "0.1.1"
 )
 
 func setlogfile(filename string) (file *os.File, err error) {
