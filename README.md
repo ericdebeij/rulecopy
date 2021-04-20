@@ -13,6 +13,36 @@ Some features:
 * the rule definitions can be stored in a configuration file or read from a configuration file
 * the variable selection does support the wildcard character *
 
+```
+Options:
+  --from FROM, -f FROM   Source property
+  --rule RULE, -r RULE   Rule name
+  --var VAR, -v VAR      Variable names, wildcard * support
+  --def DEF, -d DEF      Rule definition (json) to store / load the rule
+  --to TO, -t TO         Target property
+  --comments COMMENTS, -m COMMENTS
+                        Overrule default commit message / version note
+  --fromversion FROMVERSION
+                        Versionnumber or Latest, Production Staging
+  --fromjson FROMJSON    Use JSON export as source property (instead of property manager)
+  --toversion TOVERSION
+                        Versionnumber or Latest, Production Staging
+  --tojson TOJSON        Use JSON export as target property (instead of property manager)
+  --edgerc EDGERC        [default: ~/.edgerc] [default: ~/.edgerc]
+  --section SECTION      [default: default] [default: default]
+  --account ACCOUNT      Accountswitchkey (partners and Akamai only)
+  --toedgerc TOEDGERC    [default EDGERC]
+  --tosection TOSECTION
+                        [default SECTION]
+  --toaccount TOACCOUNT
+                        [default ACCOUNT]
+  --log LOG              Log file
+  --silent, -s           Quiet mode
+  --dryrun               additional validation and supress actual update
+  --backup BACKUP        Backup of the to-property
+  --help, -h             display this help and exit
+  --version              display version and exit
+```
 ## Installation
 ### Using akamai CLI
     $ akamai install https://github.com/ericdebeij/rulecopy.git
@@ -22,15 +52,9 @@ Download
 [latest release binary](https://github.com/ericdebeij/rulecopy/releases)
 for your system, or by cloning this repository and compiling it yourself.
 
-## STILL IN DRAFT
-TODO:
-- //Done --json/-j => --def/-d
-- //Done rule not in target => place at the end of the Default Section
-- //Done --dryrun - perform a dryrun
+## TODO
 - --values - copy variable values from definition
 - subcommands for quick usage:
-  - //DONE akamai rcp
   - akamai rcp COPY from_prop:version rule vars (into pasteboard)
   - akamai rcp PASTE to_prop:version (from pasteboard)
 - --new BASEVERSION - create a new property version instead of updating latest
-- //Done --comment / -m - alternative note instead of pregenerated message
