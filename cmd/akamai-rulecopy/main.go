@@ -35,6 +35,7 @@ type args struct {
 	Var         string `arg:"-v" help:"Variable names, wildcard * support"`
 	Def         string `arg:"-d" help:"Rule definition (json) to store / load the rule"`
 	To          string `arg:"-t" help:"Target property"`
+	Comments    string `arg:"-m" help:"Overrule default commit message / version note" `
 	Fromversion string `help:"Versionnumber or Latest, Production Staging"`
 	Fromjson    string `help:"Use JSON export as source property (instead of property manager)"`
 	Toversion   string `help:"Versionnumber or Latest, Production Staging"`
@@ -49,11 +50,17 @@ type args struct {
 	Silent      bool   `arg:"-s" help:"Quiet mode"`
 	Dryrun      bool   `help:"additional validation and supress actual update"`
 	Backup      string `help:"Backup of the to-property"`
-	Version     string `help:"Version identification"`
 }
 
 func (args) Description() string {
-	return "copyrule copies a rule (+variables) in property manager to another configuration (version)"
+	return `copyrule copies a rule (+variables) in property manager to another configuration (version)
+
+more information: https://github.com/ericdebeij/rulecopy
+	`
+}
+
+func (args) Version() string {
+	return fmt.Sprintf("rulecopy version %s", VERSION)
 }
 
 func main() {
@@ -80,6 +87,11 @@ func main() {
 		if file != nil {
 			defer file.Close()
 		}
+	}
+
+	if len(os.Args) == 1 {
+		argres.WriteHelp(os.Stderr)
+		os.Exit(1)
 	}
 
 	param := rulecopy.RuleCopyParam{

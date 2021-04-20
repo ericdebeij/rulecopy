@@ -68,9 +68,10 @@ func TestRuleCopy_happy(t *testing.T) {
 func TestRuleCopy_pbcopy(t *testing.T) {
 	log.Print("test pbcopy")
 	param := RuleCopyParam{
-		Rule: "authenticated",
-		Var:  "AUTH*",
-		Def:  "authenticated.json",
+		Rule:     "authenticated",
+		Var:      "AUTH*",
+		Def:      "authenticated.json",
+		Comments: "auth-1",
 		From: RuleCopyProperty{
 			Property: "hdebeij4.ps-akamai.nl",
 			Version:  126,
@@ -97,9 +98,10 @@ func TestRuleCopy_pbcopy(t *testing.T) {
 func TestRuleCopy_pbpaste(t *testing.T) {
 	log.Print("test pbcopy")
 	param := RuleCopyParam{
-		Rule: "authenticated",
-		Var:  "AUTH*",
-		Def:  "authenticated.json",
+		Rule:     "authenticated",
+		Var:      "AUTH*",
+		Def:      "authenticated.json",
+		Comments: "Auth-2",
 		From: RuleCopyProperty{
 			Property: "",
 			Version:  0,

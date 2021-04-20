@@ -27,12 +27,13 @@ type RuleCopyProperty struct {
 	Backup   string
 }
 type RuleCopyParam struct {
-	From   RuleCopyProperty
-	To     RuleCopyProperty
-	Rule   string
-	Var    string
-	Def    string
-	Dryrun bool
+	From     RuleCopyProperty
+	To       RuleCopyProperty
+	Rule     string
+	Var      string
+	Def      string
+	Comments string
+	Dryrun   bool
 }
 
 func (p *RuleCopyParam) Validate() (err error) {
@@ -307,9 +308,13 @@ func Run(param RuleCopyParam) (err error) {
 	if param.Rule != "" || param.Var != "" {
 		if fromPropertyRules != nil {
 			copyRule = BuildCopyRule(param.Rule, param.Var, &fromPropertyRules.Rules)
-			copyRule.Comments = fmt.Sprintf("rule %s, vars %s (%s:%d)",
-				param.Rule, param.Var,
-				param.From.Property, fromPropertyRules.PropertyVersion)
+			if param.Comments == "" {
+				copyRule.Comments = fmt.Sprintf("rule %s, vars %s (%s:%d)",
+					param.Rule, param.Var,
+					param.From.Property, fromPropertyRules.PropertyVersion)
+			} else {
+				copyRule.Comments = param.Comments
+			}
 			if param.Def != "" {
 				err = exportJson(param.Def, copyRule)
 				if err != nil {
@@ -339,12 +344,20 @@ func Run(param RuleCopyParam) (err error) {
 			if err != nil {
 				return
 			}
-			toPropertyRules.Comments = strings.Trim(fmt.Sprintf("%s\n%s", toPropertyRules.Comments, copyRule.Comments), "\n ")
+			msg := copyRule.Comments
+			if param.Comments != "" {
+				msg = param.Comments
+			}
+			toPropertyRules.Comments = strings.Trim(fmt.Sprintf("%s\n%s", toPropertyRules.Comments, msg), "\n ")
 		} else {
 			// Copy the entire ruletree as no subrule name nor variables are provided
 			toPropertyRules.Rules = fromPropertyRules.Rules
-			toPropertyRules.Comments = strings.Trim(fmt.Sprintf("%s\nContent copied from %s:%d",
-				fromPropertyRules.Comments, param.From.Property, param.From.Version), "\n ")
+			msg := fmt.Sprintf("Content copied from %s:%d", param.From.Property, param.From.Version)
+			if param.Comments != "" {
+				msg = param.Comments
+			}
+			toPropertyRules.Comments = strings.Trim(fmt.Sprintf("%s\n%s",
+				fromPropertyRules.Comments, msg), "\n ")
 		}
 
 		var storedRules *papi.UpdateRulesResponse

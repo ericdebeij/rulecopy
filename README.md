@@ -25,12 +25,12 @@ for your system, or by cloning this repository and compiling it yourself.
 ## STILL IN DRAFT
 TODO:
 - //Done --json/-j => --def/-d
-- //rule not in target => place at the end of the Default Section
-- --dryrun - perform a dryrun
+- //Done rule not in target => place at the end of the Default Section
+- //Done --dryrun - perform a dryrun
 - --values - copy variable values from definition
 - subcommands for quick usage:
   - //DONE akamai rcp
   - akamai rcp COPY from_prop:version rule vars (into pasteboard)
   - akamai rcp PASTE to_prop:version (from pasteboard)
 - --new BASEVERSION - create a new property version instead of updating latest
-- --comment / -m - alternative note instead of pregenerated message
+- //Done --comment / -m - alternative note instead of pregenerated message
