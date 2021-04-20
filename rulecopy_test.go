@@ -5,6 +5,36 @@ import (
 	"testing"
 )
 
+func TestRuleCopy_dryrun(t *testing.T) {
+	log.Print("test happy")
+	param := RuleCopyParam{
+		Rule:   "oidc",
+		Var:    "OIDC_*",
+		Def:    "rule.json",
+		Dryrun: true,
+		From: RuleCopyProperty{
+			Property: "debeij.lunacooking.com",
+			Version:  67,
+			Edgerc:   "/workspaces/go/old/ps.edgerc",
+			Section:  "default",
+			Account:  "",
+			Json:     "debug_from.json",
+		},
+		To: RuleCopyProperty{
+			Property: "dsa2_hdebeij",
+			Version:  0,
+			Edgerc:   "",
+			Section:  "",
+			Account:  "",
+			Backup:   "",
+			Json:     "debug_dry.json",
+		},
+	}
+	err := Run(param)
+	if err != nil {
+		t.Errorf("Error %s", err)
+	}
+}
 func TestRuleCopy_happy(t *testing.T) {
 	log.Print("test happy")
 	param := RuleCopyParam{
@@ -25,6 +55,7 @@ func TestRuleCopy_happy(t *testing.T) {
 			Edgerc:   "",
 			Section:  "",
 			Account:  "",
+			Backup:   "debug_backup",
 			Json:     "debug_to.json",
 		},
 	}

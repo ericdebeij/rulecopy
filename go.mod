@@ -7,4 +7,5 @@ require (
 	github.com/akamensky/argparse v1.2.2
 	github.com/alexflint/go-arg v1.3.0
 	github.com/ryanuber/go-glob v1.0.0
+	golang.org/x/tools v0.0.0-20190328211700-ab21143f2384
 )

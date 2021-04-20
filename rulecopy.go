@@ -24,13 +24,15 @@ type RuleCopyProperty struct {
 	Section  string
 	Account  string
 	Json     string
+	Backup   string
 }
 type RuleCopyParam struct {
-	From RuleCopyProperty
-	To   RuleCopyProperty
-	Rule string
-	Var  string
-	Def  string
+	From   RuleCopyProperty
+	To     RuleCopyProperty
+	Rule   string
+	Var    string
+	Def    string
+	Dryrun bool
 }
 
 func (p *RuleCopyParam) Validate() (err error) {
@@ -135,7 +137,7 @@ func FetchRules(p papi.PAPI, name string, version int) (treeResponse *papi.GetRu
 	return
 }
 
-func StoreRules(p papi.PAPI, name string, g *papi.GetRuleTreeResponse) (res *papi.UpdateRulesResponse, err error) {
+func StoreRules(p papi.PAPI, name string, dryrun bool, g *papi.GetRuleTreeResponse) (res *papi.UpdateRulesResponse, err error) {
 	ptr := papi.UpdateRulesRequest{
 		PropertyID:      g.PropertyID,
 		PropertyVersion: g.PropertyVersion,
@@ -148,6 +150,11 @@ func StoreRules(p papi.PAPI, name string, g *papi.GetRuleTreeResponse) (res *pap
 			Comments: g.Comments,
 			Rules:    g.Rules,
 		},
+	}
+	if dryrun {
+		ptr.DryRun = true
+		ptr.ValidateMode = "full"
+		ptr.ValidateRules = true
 	}
 	res, err = p.UpdateRuleTree(context.Background(), ptr)
 	return
@@ -321,7 +328,10 @@ func Run(param RuleCopyParam) (err error) {
 			return
 		}
 	}
-	//exportJson("debug_unchanged.json", toPropertyRules)
+
+	if param.To.Backup != "" {
+		exportJson(param.To.Backup, toPropertyRules)
+	}
 
 	if toPropertyRules != nil {
 		if copyRule != nil {
@@ -337,20 +347,25 @@ func Run(param RuleCopyParam) (err error) {
 				fromPropertyRules.Comments, param.From.Property, param.From.Version), "\n ")
 		}
 
-		if param.To.Json != "" {
-			err = exportJson(param.To.Json, toPropertyRules)
-			if err != nil {
-				return
-			}
-			log.Printf("property %s:%d exported to %s", param.To.Property, toPropertyRules.PropertyVersion, param.To.Json)
-		}
-
+		var storedRules *papi.UpdateRulesResponse
 		if param.To.Property != "" {
-			_, err = StoreRules(papiTo, param.To.Property, toPropertyRules)
+			storedRules, err = StoreRules(papiTo, param.To.Property, param.Dryrun, toPropertyRules)
 			if err != nil {
 				return
 			}
 			log.Printf("property %s:%d stored", param.To.Property, toPropertyRules.PropertyVersion)
+		}
+
+		if param.To.Json != "" {
+			if storedRules == nil {
+				err = exportJson(param.To.Json, toPropertyRules)
+			} else {
+				err = exportJson(param.To.Json, storedRules)
+			}
+			if err != nil {
+				return
+			}
+			log.Printf("property %s:%d exported to %s", param.To.Property, toPropertyRules.PropertyVersion, param.To.Json)
 		}
 	}
 	return

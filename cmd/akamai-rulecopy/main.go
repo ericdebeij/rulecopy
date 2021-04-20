@@ -47,6 +47,8 @@ type args struct {
 	Toaccount   string `help:"[default ACCOUNT]"`
 	Log         string `help:"Log file"`
 	Silent      bool   `arg:"-s" help:"Quiet mode"`
+	Dryrun      bool   `help:"additional validation and supress actual update"`
+	Backup      string `help:"Backup of the to-property"`
 	Version     string `help:"Version identification"`
 }
 
@@ -81,9 +83,10 @@ func main() {
 	}
 
 	param := rulecopy.RuleCopyParam{
-		Rule: args.Rule,
-		Var:  args.Var,
-		Def:  args.Def,
+		Rule:   args.Rule,
+		Var:    args.Var,
+		Def:    args.Def,
+		Dryrun: args.Dryrun,
 		From: rulecopy.RuleCopyProperty{
 			Property: args.From,
 			Version:  fromVersion,
@@ -99,6 +102,7 @@ func main() {
 			Section:  args.Tosection,
 			Account:  args.Toaccount,
 			Json:     args.Fromjson,
+			Backup:   args.Backup,
 		},
 	}
 	err = param.Validate()
