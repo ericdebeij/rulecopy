@@ -1,20 +1,26 @@
 # akamai-rulecopy
-**DRAFT see draft note at the end**
-
 Rulecopy is a sample utility / package for Akamai configurations to copy a rule and variable from one property manager configuration to another one.
 
-Sample usage:
+Sample usage to copy the rule cors and the related variables CORS_*:
 
-    $ akamai-rulecopy -f from_config -r some_rule -v some_var -t to_config
+    $ akamai-rulecopy -f fromprop -r cors -v 'CORS_*' -t toprop
+
+As a best practice the utility can also be used as an akamai cli:
+
+    $ akamai rcp -f fromprop -r cors -v 'CORS_*' -t toprop
+
+Rules+variables can also be stored in a definition file and use them as text objects:
+
+    $ akamai rcp -d cors.json -t toprop
 
 Some features:
 * the utility will search in the source property for the rule with the given name and copies the content together with the variable definitions
-* the utility will search in the target property for the rule with the given name and overrides this with the rule as found in the source. Variables will be merged, if the variable exists the initial-value from the target property will be re-used
+* the utility will search in the target property for the rule with the given name and overrides this with the rule as found in the source, if the rule is not found it will be added at the end. Variables will be merged, if the variable exists the initial-value from the target property will be re-used
 * the rule definitions can be stored in a configuration file or read from a configuration file
 * the variable selection does support the wildcard character *
 
 ```
-Options:
+Command line paramters:
   --from FROM, -f FROM   Source property
   --rule RULE, -r RULE   Rule name
   --var VAR, -v VAR      Variable names, wildcard * support
@@ -50,8 +56,9 @@ Download
 for your system, or by cloning this repository and compiling it yourself.
 
 ## TODO
-- --values - copy variable values from definition
-- subcommands for quick usage:
-  - akamai rcp COPY from_prop:version rule vars (into pasteboard)
-  - akamai rcp PASTE to_prop:version (from pasteboard)
+- --values - copy variable values from definition; currently variables values are not overwritten (by design) as they can contain configurable values)
 - --new BASEVERSION - create a new property version instead of updating latest
+
+## Not implemented
+- Considered to have the utility work like the pasteboard (pbcopy, pbpaste). Didn't do that but you can simply mimik that by using a definition file.
+- Considered exporting a json diff of the changes that will be / are made. Didn't do that as you can simply compare the backup and target export.

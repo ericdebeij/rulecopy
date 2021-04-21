@@ -37,6 +37,9 @@ type RuleCopyParam struct {
 }
 
 func (p *RuleCopyParam) Validate() (err error) {
+	if p.From.Edgerc == "" {
+		p.From.Edgerc = "~/.edgerc"
+	}
 	if p.From.Section == "" {
 		p.From.Section = "default"
 	}
@@ -88,7 +91,7 @@ func VersionConv(s string) (i int, err error) {
 // Rules contains Rule object
 type CopyRule struct {
 	Name      string              `json:"name"`
-	Comments  string              `json:"comment"`
+	Comments  string              `json:"comments"`
 	Rules     []papi.Rules        `json:"rules,omitempty"`
 	Variables []papi.RuleVariable `json:"variables,omitempty"`
 }

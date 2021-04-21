@@ -1,0 +1,112 @@
+{
+ "name": "CORS",
+ "comments": "CORS with origin",
+ "rules": [
+  {
+   "behaviors": [
+    {
+     "name": "modifyOutgoingResponseHeader",
+     "options": {
+      "action": "MODIFY",
+      "avoidDuplicateHeaders": false,
+      "newHeaderValue": "GET,POST,OPTIONS",
+      "standardModifyHeaderName": "ACCESS_CONTROL_ALLOW_METHODS"
+     }
+    },
+    {
+     "name": "modifyOutgoingResponseHeader",
+     "options": {
+      "action": "MODIFY",
+      "avoidDuplicateHeaders": false,
+      "newHeaderValue": "origin,range,hdntl,hdnts",
+      "standardModifyHeaderName": "ACCESS_CONTROL_ALLOW_HEADERS"
+     }
+    },
+    {
+     "name": "modifyOutgoingResponseHeader",
+     "options": {
+      "action": "MODIFY",
+      "avoidDuplicateHeaders": false,
+      "newHeaderValue": "Server,range,hdntl,hdnts,Akamai-Mon-Iucid-Ing,Akamai-Mon-Iucid-Del,Akamai-Request-BC",
+      "standardModifyHeaderName": "ACCESS_CONTROL_EXPOSE_HEADERS"
+     }
+    },
+    {
+     "name": "modifyOutgoingResponseHeader",
+     "options": {
+      "action": "MODIFY",
+      "avoidDuplicateHeaders": false,
+      "newHeaderValue": "true",
+      "standardModifyHeaderName": "ACCESS_CONTROL_ALLOW_CREDENTIALS"
+     }
+    },
+    {
+     "name": "modifyOutgoingResponseHeader",
+     "options": {
+      "action": "MODIFY",
+      "avoidDuplicateHeaders": false,
+      "newHeaderValue": "86400",
+      "standardModifyHeaderName": "ACCESS_CONTROL_MAX_AGE"
+     }
+    }
+   ],
+   "children": [
+    {
+     "behaviors": [
+      {
+       "name": "setVariable",
+       "options": {
+        "extractLocation": "CLIENT_REQUEST_HEADER",
+        "headerName": "Origin",
+        "transform": "NONE",
+        "valueSource": "EXTRACT",
+        "variableName": "PMUSER_CORS_ORIGIN"
+       }
+      }
+     ],
+     "criteria": [
+      {
+       "name": "requestHeader",
+       "options": {
+        "headerName": "Origin",
+        "matchOperator": "EXISTS",
+        "matchWildcardName": false
+       }
+      }
+     ],
+     "name": "Set origin",
+     "options": {},
+     "criteriaMustSatisfy": "all"
+    },
+    {
+     "behaviors": [
+      {
+       "name": "modifyOutgoingResponseHeader",
+       "options": {
+        "action": "MODIFY",
+        "avoidDuplicateHeaders": true,
+        "newHeaderValue": "{{user.PMUSER_CORS_ORIGIN}}",
+        "standardModifyHeaderName": "ACCESS_CONTROL_ALLOW_ORIGIN"
+       }
+      }
+     ],
+     "name": "Allow origin",
+     "options": {},
+     "criteriaMustSatisfy": "all"
+    }
+   ],
+   "name": "CORS",
+   "options": {},
+   "criteriaMustSatisfy": "all"
+  }
+ ],
+ "variables": [
+  {
+   "description": "Handle strict-origin-when-cross-origin",
+   "hidden": false,
+   "name": "PMUSER_CORS_ORIGIN",
+   "sensitive": false,
+   "value": "*"
+  }
+ ]
+}

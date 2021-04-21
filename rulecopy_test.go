@@ -15,8 +15,8 @@ func TestRuleCopy_dryrun(t *testing.T) {
 		From: RuleCopyProperty{
 			Property: "debeij.lunacooking.com",
 			Version:  67,
-			Edgerc:   "/workspaces/go/old/ps.edgerc",
-			Section:  "default",
+			Edgerc:   "",
+			Section:  "",
 			Account:  "",
 			Json:     "debug_from.json",
 		},
@@ -44,8 +44,8 @@ func TestRuleCopy_happy(t *testing.T) {
 		From: RuleCopyProperty{
 			Property: "debeij.lunacooking.com",
 			Version:  67,
-			Edgerc:   "/workspaces/go/old/ps.edgerc",
-			Section:  "default",
+			Edgerc:   "",
+			Section:  "",
 			Account:  "",
 			Json:     "debug_from.json",
 		},
@@ -75,13 +75,40 @@ func TestRuleCopy_pbcopy(t *testing.T) {
 		From: RuleCopyProperty{
 			Property: "hdebeij4.ps-akamai.nl",
 			Version:  126,
-			Edgerc:   "/workspaces/go/old/ps.edgerc",
-			Section:  "default",
+			Edgerc:   "",
+			Section:  "",
 			Account:  "",
 			Json:     "debug_from.json",
 		},
 		To: RuleCopyProperty{
 			Property: "",
+			Version:  0,
+			Edgerc:   "",
+			Section:  "",
+			Account:  "",
+			Json:     "",
+		},
+	}
+	err := Run(param)
+	if err != nil {
+		t.Errorf("Error %s", err)
+	}
+}
+
+func TestRuleCopy_cors(t *testing.T) {
+	log.Print("cors")
+	param := RuleCopyParam{
+		Def: "examples/cors.json",
+		From: RuleCopyProperty{
+			Property: "",
+			Version:  0,
+			Edgerc:   "",
+			Section:  "",
+			Account:  "",
+			Json:     "",
+		},
+		To: RuleCopyProperty{
+			Property: "dsa2_hdebeij",
 			Version:  0,
 			Edgerc:   "",
 			Section:  "",
@@ -105,8 +132,8 @@ func TestRuleCopy_pbpaste(t *testing.T) {
 		From: RuleCopyProperty{
 			Property: "",
 			Version:  0,
-			Edgerc:   "/workspaces/go/old/ps.edgerc",
-			Section:  "default",
+			Edgerc:   "",
+			Section:  "",
 			Account:  "",
 			Json:     "",
 		},
@@ -131,7 +158,6 @@ func TestRuleCopy_rollback(t *testing.T) {
 		From: RuleCopyProperty{
 			Property: "dsa2_hdebeij",
 			Version:  2,
-			Edgerc:   "/workspaces/go/old/ps.edgerc",
 			Json:     "debug_from.json",
 		},
 		To: RuleCopyProperty{
